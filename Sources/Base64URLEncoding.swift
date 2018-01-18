@@ -97,7 +97,7 @@ public extension Data {
         var i = 0
         var outputIndex = 0
         var errorCheck = 0
-        while i + 4 <= length { // decode 4 bytes to
+        while i + 4 <= length { // decode 4 characters to 3 bytes
             let b1 = Int(base64URLDecodingIndex[Int(encoded[i])])
             let b2 = Int(base64URLDecodingIndex[Int(encoded[i + 1])])
             let b3 = Int(base64URLDecodingIndex[Int(encoded[i + 2])])
@@ -113,7 +113,7 @@ public extension Data {
             outputIndex += 3
         }
 
-        if trailingBytes != 0 {
+        if trailingBytes != 0 { // decode the last 2 or 3 characters
             let b1 = Int(base64URLDecodingIndex[Int(encoded[i])])
             let b2 = Int(base64URLDecodingIndex[Int(encoded[i + 1])])
 
