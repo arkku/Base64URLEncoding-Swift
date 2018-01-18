@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../Sources/Base64Helpers.swift">
+   </FileRef>
+   <FileRef
+      location = "group:../Sources/Base64URLEncoding.swift">
+   </FileRef>
+   <FileRef
       location = "self:Base64URLEncoding.xcodeproj">
    </FileRef>
 </Workspace>

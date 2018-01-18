@@ -1,0 +1,39 @@
+.DS_Store
+*.swp
+
+## Build generated
+.build
+build/
+DerivedData
+
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+## Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+timeline.xctimeline
+Gemfile.lock
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+
+## Fastlane
+fastlane/test_output
+fastlane/report.*
+fastlane/README*
+fastlane/screenshots
+Preview.html
+*.dSYM.zip
+
