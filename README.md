@@ -9,12 +9,16 @@ its name) and it uses no padding.
 
 ~ [Kimmo Kulovesi](http://arkku.com/), 2018-01-19
 
-Usage
-=====
+Usage by Example
+================
 
     import Base64URLEncoding
-
+    
     let myString = "Lorem?ipsum"
     let encodedString = myString.base64URLEncoded()!
-    let decodedData = Data(base64URLEncoded: encodedString)
-
+    
+    let myData = myString.data(using: .utf8)!
+    let encodedData = myData.base64URLEncodedData()
+    
+    let decodedData = Data(base64URLEncoded: encodedString)!
+    let decodedString = encodedString.base64URLDecodedString()!
