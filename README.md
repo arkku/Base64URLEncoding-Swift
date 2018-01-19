@@ -23,6 +23,17 @@ Usage by Example
     let decodedData = Data(base64URLEncoded: encodedString)!
     let decodedString = encodedString.base64URLDecodedString()!
 
+Additionally, ready-made custom `Data` coding blocks are provided for  `JSONDecoder` and `JSONEncoder`:
+
+    let encoder = JSONEncoder()
+    encoder.dataEncodingStrategy = .custom(base64URLDataEncoding)
+    let myObject = [ myData ]
+    let json = try! encoder.encode(myObject)
+
+    let decoder = JSONDecoder()
+    decoder.dataDecodingStrategy = .custom(base64URLDataDecoding)
+    let decodedObject = try! decoder.decode([Data].self, from: json)
+
 Installation
 ============
 
@@ -50,4 +61,3 @@ To import with the Swift Package Manager, add the dependency to your
     targets: [
         .target(name: "MyApp", dependencies: [ "Base64URLEncoding" ]),
     ]
-
