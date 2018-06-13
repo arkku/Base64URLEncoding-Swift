@@ -9,6 +9,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "Base64URLEncoding", dependencies: [], path: "Sources"),
-        //.testTarget(name: "Base64URLEncodingTests", dependencies: [ "Base64URLEncoding" ]),
+        .testTarget(name: "Base64URLEncodingTests", dependencies: [ "Base64URLEncoding" ], path: "Tests"),
     ]
 )
