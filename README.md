@@ -42,7 +42,7 @@ Git Submodule
 
 Add the submodule as usual:
 
-    git submodule add https://github.com/arkku/Base64URLEncoding-Swift
+    git submodule add https://github.com/arkku/Base64URLEncoding-Swift.git
 
 Then add `Base64URLEncoding.xcodeproj` to your project, go to your own
 project's target and the _Build Phases_ tab. From there select
@@ -56,7 +56,7 @@ To import with the Swift Package Manager, add the dependency to your
 `Package.swift` as follows:
 
     dependencies: [
-        .package(url: "https://github.com/arkku/Base64URLEncoding-Swift", from: "1.0.0"),
+        .package(url: "https://github.com/arkku/Base64URLEncoding-Swift", from: "1.0.1"),
     ],
     targets: [
         .target(name: "MyApp", dependencies: [ "Base64URLEncoding" ]),
