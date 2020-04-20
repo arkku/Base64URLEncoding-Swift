@@ -6,7 +6,7 @@
 //  two of the digit-characters have been changed to be URL safe,
 //  and that padding is not used.
 //
-//  Copyright (c) 2017-2018 Kimmo Kulovesi
+//  Copyright (c) 2017-2020 Kimmo Kulovesi
 //  https://github.com/arkku/
 //
 
@@ -56,7 +56,7 @@ public extension Data {
 
         if padding != 0 { // byte count was not divisible by 3
             let byte1 = Int(self[inputIndex])
-            let byte2 = padding == 1 ? Int(self[inputIndex + 1]) : 0
+            let byte2 = (padding == 1) ? Int(self[inputIndex + 1]) : 0
 
             encoded[outputIndex] = base64URLDigits[byte1 >> 2]
             encoded[outputIndex + 1] = base64URLDigits[((byte1 & 0x03) << 4) | (byte2 >> 4)]
@@ -97,36 +97,37 @@ public extension Data {
         var i = 0
         var outputIndex = 0
         var errorCheck = 0
+
+        let decodeNextByte: () -> Int = {
+            let byte = Int(base64URLDecodingIndex[Int(encoded[i])])
+            i += 1
+            errorCheck |= byte
+            return byte
+        }
+
         while i + 4 <= length { // decode 4 characters to 3 bytes
-            let b1 = Int(base64URLDecodingIndex[Int(encoded[i])])
-            let b2 = Int(base64URLDecodingIndex[Int(encoded[i + 1])])
-            let b3 = Int(base64URLDecodingIndex[Int(encoded[i + 2])])
-            let b4 = Int(base64URLDecodingIndex[Int(encoded[i + 3])])
-            i += 4
+            var value = decodeNextByte() << 18
+            value |= decodeNextByte() << 12
+            value |= decodeNextByte() << 6
+            value |= decodeNextByte()
 
-            errorCheck |= b1 | b2 | b3 | b4
-
-            let value = (b1 << 18) | (b2 << 12) | (b3 << 6) | b4
-            decoded[outputIndex]     = (UInt8(truncatingIfNeeded: value >> 16))
-            decoded[outputIndex + 1] = (UInt8(truncatingIfNeeded: value >> 8))
-            decoded[outputIndex + 2] = (UInt8(truncatingIfNeeded: value))
-            outputIndex += 3
+            decoded[outputIndex] = UInt8(truncatingIfNeeded: value >> 16)
+            outputIndex += 1
+            decoded[outputIndex] = UInt8(truncatingIfNeeded: value >> 8)
+            outputIndex += 1
+            decoded[outputIndex] = UInt8(truncatingIfNeeded: value)
+            outputIndex += 1
         }
 
         if trailingBytes != 0 { // decode the last 2 or 3 characters
-            let b1 = Int(base64URLDecodingIndex[Int(encoded[i])])
-            let b2 = Int(base64URLDecodingIndex[Int(encoded[i + 1])])
+            var value = decodeNextByte() << 12
+            value |= decodeNextByte() << 6
 
-            errorCheck |= b1 | b2
-
-            var value = (b1 << 12) | (b2 << 6)
-
-            decoded[outputIndex] = (UInt8(truncatingIfNeeded: value >> 10))
+            decoded[outputIndex] = UInt8(truncatingIfNeeded: value >> 10)
             if trailingBytes != 1 {
-                let b3 = Int(base64URLDecodingIndex[Int(encoded[i + 2])])
-                errorCheck |= b3
-                value |= b3
-                decoded[outputIndex + 1] = (UInt8(truncatingIfNeeded: value >> 2))
+                outputIndex += 1
+                value |= decodeNextByte()
+                decoded[outputIndex] = UInt8(truncatingIfNeeded: value >> 2)
             }
         }
 
@@ -182,4 +183,3 @@ public let base64URLDataDecoding: (Decoder) throws -> Data = { decoder in
     }
     return data
 }
-

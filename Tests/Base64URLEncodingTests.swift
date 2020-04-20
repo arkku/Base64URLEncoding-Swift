@@ -34,11 +34,11 @@ class Base64URLEncodingTests: XCTestCase {
     }
 
     func testEncodeDecode() {
-        let testUpToLength = 1024
+        let testUpToLength = 1_500
         var testData = Data()
 
         while testData.count < testUpToLength {
-            testData.append(UInt8(arc4random() & 0xFF))
+            testData.append(.random(in: .min...(.max)))
             let encoded = testData.base64URLEncodedData()
             let decoded = encoded.base64URLDecodedData()
             XCTAssertEqual(decoded, testData)
